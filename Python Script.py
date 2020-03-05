@@ -12,11 +12,15 @@ def import_spreadsheets(test):
         excel_path = r'G:/Users2 (Temp)/AlexB/Private/Macro'
         os.chdir(excel_path)
 
-        my_spreadsheet2 = pd.read_excel('temp.xlsx', sheet_name='Sheet1')
+        my_spreadsheet1, my_spreadsheet2 = pd.read_excel('Pricing for Week 09 - 2020-2.xlsm', sheet_name='buying worksheet'), pd.read_excel('temp.xlsx', sheet_name='Sheet1')
+        #print(my_spreadsheet1)
         #print(my_spreadsheet2)
-        
-        col1 = my_spreadsheet2['test']
-        #for x in range(len(col1)): print('{}'.format(col1[x]))
+
+        colA, colB = my_spreadsheet1['Unnamed: 2'],my_spreadsheet2['test']
+        #print('\nLength of list A: {}\n'.format(len(colA)))
+        #for x in range(len(colA)): print('{}'.format(colA[x]))
+        #print('\nLenght of list B: {}\n'.format(len(colB)))
+        #for y in range(len(colB)): print('{}'.format(colB[y]))
 
     else:
         pass
