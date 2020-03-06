@@ -1,6 +1,7 @@
 import os
 import time
 import pandas as pd 
+import win32com.client 
 
 def import_spreadsheets(test):
 
@@ -16,14 +17,78 @@ def import_spreadsheets(test):
         #print(my_spreadsheet1)
         #print(my_spreadsheet2)
 
-        colA, colB = my_spreadsheet1['Unnamed: 2'],my_spreadsheet2['test']
+        colA, colB = my_spreadsheet1['Unnamed: 2'].tolist(),my_spreadsheet2['test'].tolist()
+        # Test colA
+        #print('\npm_id type: {}'.format(type(colA)))
         #print('\nLength of list A: {}\n'.format(len(colA)))
         #for x in range(len(colA)): print('{}'.format(colA[x]))
+        # test colB
+        #print('\ntest_val type: {}'.format(type(colB)))
         #print('\nLenght of list B: {}\n'.format(len(colB)))
         #for y in range(len(colB)): print('{}'.format(colB[y]))
 
+        return colA, colB
+
     else:
         pass
+
+def check(list1, test_val):
+    
+    #print('list1 = {}'.format(list1))
+    #print('test_val = {}'.format(test_val))
+
+    # traverse in the list
+    for i in test_val:
+        if str(i) in str(list1):
+            #print('True')
+            #print('{}'.format(list1[i]))
+            return True
+        else:
+            #print('False')
+            return False
+    
+
+def process_data(test, pm_id, test_val):
+    
+    # Test Master override
+    test = False
+
+    if test == False:
+        
+        # Setting up to read/write engine for excel
+        excelApp = win32com.client.GetActiveObject('Excel.Application')
+
+        # create a reference to the actual Excel Workbook - Allows script to modify in real time
+        # Path is mutable dependent on where the file resides. Network paths need UNC path /
+        
+        #path = r'G:Users2 (temp)/AlexB/Private/Macro/'
+        #os.chdir(path)
+        #print('\nCurrent Directory: {}'.format(os.listdir(path)))
+        
+        excelBook = excelApp.workBooks(r'Pricing for Week 09 - 2020-2.xlsm')
+        excelWorkSheet = excelBook.worksheets(r'buying worksheet')
+
+        #print('\nWorksheet Name: {}'.format(excelWorkSheet.name))
+        #print('\npm_id type: {}'.format(type(pm_id)))
+        #print('\ntest_val type: {}'.format(type(test_val)))
+
+        #check(pm_id[10], test_val)
+        for x in range(4, len(pm_id)):    
+            result = check(pm_id[x], test_val)
+            if result == True:
+                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 3
+                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Borders(1).Color
+
+                excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 3
+
+                #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
+            else:
+                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
+                excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
+
+                #excelWorkSheet.Range('b{}:t{}'.format(x, x)).BorderAround.ColorIndex = 1
+                #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
+        
 
 def main():
     
@@ -34,7 +99,9 @@ def main():
     test = True 
 
     # import spreadsheet values
-    import_spreadsheets(test)
+    pm_id, test_val = import_spreadsheets(test)
+
+    process_data(test, pm_id, test_val)
 
     # Stop tracking runtime & calculate elapsed time
     stop = time.time()
