@@ -40,13 +40,17 @@ def check(list1, test_val):
     # traverse in the list
     for i in test_val:
         if str(i) in str(list1):
-            #print('True')
-            #print('{}'.format(list1[i]))
-            return True
+            print('List1: {} - test_val: {}'.format(list1, test_val))
+            result = True
+
+        elif str(i).zfill(5) in str(list1):
+            print('List1: {} - test_val: {}'.format(list1, test_val))
+            result = True 
         else:
-            #print('False')
-            return False
-    
+            #print('List1: {} - test_val: {}'.format(list1, test_val))
+            result = False
+
+    return result
 
 def process_data(test, pm_id, test_val):
     
@@ -72,23 +76,33 @@ def process_data(test, pm_id, test_val):
         #print('\npm_id type: {}'.format(type(pm_id)))
         #print('\ntest_val type: {}'.format(type(test_val)))
 
+        true, false = 0, 0 
         #check(pm_id[10], test_val)
-        for x in range(4, len(pm_id)):    
+        for x in range(0, len(pm_id)):    
             result = check(pm_id[x], test_val)
-            if result == True:
-                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 3
-                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Borders(1).Color
 
+            # sync check
+            excelWorkSheet.Range('c{}'.format(x)).Value
+
+            """
+            if result == True:
+                true += 1
+                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 3
+                #borderA = excelWorkSheet.Range('b{}:t{}'.format(x, x))
                 excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 3
 
                 #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
+                
             else:
-                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
-                excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
+                false += 1
+                #excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
+                #excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
 
                 #excelWorkSheet.Range('b{}:t{}'.format(x, x)).BorderAround.ColorIndex = 1
                 #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
-        
+            """
+    
+    print('\nTrue: {}\nFalse: {}\n'.format(true, false))
 
 def main():
     
