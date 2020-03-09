@@ -17,7 +17,7 @@ def import_spreadsheets(test):
         #print(my_spreadsheet1)
         #print(my_spreadsheet2)
 
-        colA, colB = my_spreadsheet1['Unnamed: 2'].tolist(),my_spreadsheet2['test'].tolist()
+        colA, colB = my_spreadsheet1['Unnamed: 2'].tolist(), my_spreadsheet2['test'].tolist()
         # Test colA
         #print('\npm_id type: {}'.format(type(colA)))
         #print('\nLength of list A: {}\n'.format(len(colA)))
@@ -38,19 +38,17 @@ def check(list1, test_val):
     #print('test_val = {}'.format(test_val))
 
     # traverse in the list
-    for i in test_val:
-        if str(i) in str(list1):
-            print('List1: {} - test_val: {}'.format(list1, test_val))
-            result = True
+    result1 = test_val.count(list1)
+    print(result1)
 
-        elif str(i).zfill(5) in str(list1):
-            print('List1: {} - test_val: {}'.format(list1, test_val))
-            result = True 
-        else:
-            #print('List1: {} - test_val: {}'.format(list1, test_val))
-            result = False
-
-    return result
+    if result1 > 0:
+        print('\nCheck 1\nList1: {} - test_val: {}'.format(list1, test_val))
+        print('\nYes, element exist within list')
+        return True
+    else: 
+        print('List1: {} - test_val: {}'.format(list1, test_val))
+        print('\nNo, element does not exist within list')
+        return False
 
 def process_data(test, pm_id, test_val):
     
@@ -79,27 +77,29 @@ def process_data(test, pm_id, test_val):
         true, false = 0, 0 
         #check(pm_id[10], test_val)
         for x in range(4, len(pm_id)):    
+            
             result = check(pm_id[x], test_val)
 
             # sync check
             #excelWorkSheet.Range('c{}'.format(x)).Value
+            try: 
+                if result:
+                    true += 1
+                    excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 3
+                    #borderA = excelWorkSheet.Range('b{}:t{}'.format(x, x))
+                    excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 3
 
-            if result == False:
-                true += 1
-                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 3
-                #borderA = excelWorkSheet.Range('b{}:t{}'.format(x, x))
-                excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 3
+                    #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
+                    
+                else:
+                    false += 1
+                    excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
+                    excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
 
-                #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
-                
-            else:
-                false += 1
-                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
-                excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
-
-                #excelWorkSheet.Range('b{}:t{}'.format(x, x)).BorderAround.ColorIndex = 1
-                #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
-            
+                    #excelWorkSheet.Range('b{}:t{}'.format(x, x)).BorderAround.ColorIndex = 1
+                    #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
+            except:
+                pass    
     
     print('\nTrue: {}\nFalse: {}\n'.format(true, false))
 
