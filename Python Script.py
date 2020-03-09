@@ -78,14 +78,13 @@ def process_data(test, pm_id, test_val):
 
         true, false = 0, 0 
         #check(pm_id[10], test_val)
-        for x in range(0, len(pm_id)):    
+        for x in range(4, len(pm_id)):    
             result = check(pm_id[x], test_val)
 
             # sync check
-            excelWorkSheet.Range('c{}'.format(x)).Value
+            #excelWorkSheet.Range('c{}'.format(x)).Value
 
-            """
-            if result == True:
+            if result == False:
                 true += 1
                 excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 3
                 #borderA = excelWorkSheet.Range('b{}:t{}'.format(x, x))
@@ -95,12 +94,12 @@ def process_data(test, pm_id, test_val):
                 
             else:
                 false += 1
-                #excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
-                #excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
+                excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
+                excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
 
                 #excelWorkSheet.Range('b{}:t{}'.format(x, x)).BorderAround.ColorIndex = 1
                 #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
-            """
+            
     
     print('\nTrue: {}\nFalse: {}\n'.format(true, false))
 
