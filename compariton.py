@@ -1,45 +1,37 @@
-def check(list1, test_val):
-    
-    #print('list1 = {}'.format(list1))
-    #print('test_val = {}'.format(test_val))
+import os
+import time
+import pandas as pd 
+import win32com.client 
 
-    # traverse in the list
-    #for i in test_val:
-    
-    result1 = test_val.count(list1)
-    print(result1)
+start = time.time()
 
-    if result1 > 0:
-        print('\nCheck 1\nList1: {} - test_val: {}'.format(list1, test_val))
-        print('\nYes, element exist within list')
-        return True
-    else: 
-        #print('List1: {} - test_val: {}'.format(list1, test_val))
-        print('\nNo, element does not exist within list')
-        return False
-    
-    """
-    if str(i) in str(list1):
-        print('\nCheck 1\nList1: {} - test_val: {}'.format(list1, test_val))
-        print('\nYes, element exist within list')
-        return True
+# import sheets
+excel_path = r'G:/Users2 (Temp)/AlexB/Private/Macro'
+os.chdir(excel_path)
 
-    elif str(i).zfill(5) in str(list1):
-        print('List1: {} - test_val: {}'.format(list1, test_val))
-        return True
-    else:
-        #print('List1: {} - test_val: {}'.format(list1, test_val))
-        print('\nNo, element does not exist within list')
-        return False
-    """
-def main():
+my_spreadsheet1 = pd.read_excel('Pricing for Week 09 - 2020-2.xlsm', sheet_name='buying worksheet')
+my_spreadsheet2 = pd.read_excel('temp.xlsx', sheet_name='Sheet1')
 
-    list1 = '02952'
-    test_val = '02952', '03238', '04980', '03593', '3845', '62606', '08942'
+column1 = my_spreadsheet1['Unnamed: 2'].tolist()
+column2 = my_spreadsheet2['test'].tolist()
 
-    result = check(list1, test_val)
+excelApp = win32com.client.GetActiveObject('Excel.Application')
+excelBook = excelApp.workBooks(r'Pricing for Week 09 - 2020-2.xlsm')
+excelWorkSheet = excelBook.worksheets(r'buying worksheet')
 
-    print('\nResult: {}'.format(result))
+b = column1
+a = column2
 
-if __name__ == '__main__':
-    main()
+for i in b:
+    try: 
+        if i in a:
+            print('{} is in both sets'.format(i))
+        else:
+            print('{} is not in either set'.format(i))
+    except:
+        pass        
+
+stop = time.time()
+elapsed = stop - start
+total_time = time.strftime('%H:%M:%S', time.gmtime(elapsed))
+print('\nTotal time elapsed: {}'.format(total_time))

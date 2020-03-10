@@ -27,8 +27,17 @@ def import_spreadsheets(test):
         #print('\nLenght of list B: {}\n'.format(len(colB)))
         #for y in range(len(colB)): print('{}'.format(colB[y]))
 
-        return colA, colB
+        #colA = str(colA)
+        #colB = str(colB)
+        check(colA, colB)
 
+        #for i in range(0, 10):
+            #print(type(colA[i]))
+
+        #for x in range(len(colB)):
+            #print(type(colB[x]))
+        
+        return colA, colB
     else:
         pass
 
@@ -38,16 +47,18 @@ def check(list1, test_val):
     #print('test_val = {}'.format(test_val))
 
     # traverse in the list
-    result1 = test_val.count(list1)
-    print(result1)
+    #result1 = (test_val).count(list1)
+    result1 = set(list1) - set(test_val)
 
-    if result1 > 0:
+    # print(result1)
+
+    if len(result1) > 0:
         print('\nCheck 1\nList1: {} - test_val: {}'.format(list1, test_val))
         print('\nYes, element exist within list')
         return True
     else: 
-        print('List1: {} - test_val: {}'.format(list1, test_val))
-        print('\nNo, element does not exist within list')
+        #print('List1: {} - test_val: {}'.format(list1, test_val))
+        #print('\nNo, element does not exist within list')
         return False
 
 def process_data(test, pm_id, test_val):
@@ -93,15 +104,15 @@ def process_data(test, pm_id, test_val):
                     
                 else:
                     false += 1
-                    excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 2
-                    excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 2
+                    excelWorkSheet.Range('b{}:t{}'.format(x, x)).Interior.ColorIndex = 0
+                    excelWorkSheet.Range('w{}:af{}'.format(x, x)).Interior.ColorIndex = 0
 
                     #excelWorkSheet.Range('b{}:t{}'.format(x, x)).BorderAround.ColorIndex = 1
                     #excelWorkSheet.Range('w{}:af{}'.format(x, x)).BorderAround.ColorIndex = 1
             except:
                 pass    
     
-    print('\nTrue: {}\nFalse: {}\n'.format(true, false))
+    #print('\nTrue: {}\nFalse: {}\n'.format(true, false))
 
 def main():
     
