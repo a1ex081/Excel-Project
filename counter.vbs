@@ -2,8 +2,7 @@ Option Explicit
 
 Sub counter()
 
-'ScreenUpdating = False
-
+'Primary workbook
 Dim wkb1 As Excel.Workbook
 Dim wks1 As Excel.Worksheet
 Set wkb1 = Excel.Workbooks("Pricing for Week 09 - 2020-2.xlsm")
@@ -16,13 +15,9 @@ Set wkb2 = Excel.Workbooks("temp.xlsx")
 Set wks2 = wkb2.Worksheets("Sheet1")
 
 Dim rowRange1 As Range
-Dim colRange1 As Range
-Dim lastCol1 As Long
 Dim lastRow1 As Long
 
 Dim rowRange2 As Range
-Dim colRange2 As Range
-Dim lastCol2 As Long
 Dim lastRow2 As Long
 
 'Primary workbook
@@ -40,13 +35,23 @@ Dim myValue2
 
 Dim rrow1
 Dim rrow2
+Dim wipe
 
 Dim count1 As Integer
 Dim count2 As Integer
+Dim clean1 As Integer
+
 count1 = 0
+clean1 = 0
 
+'Set interior color for all cells in range to blank
+For Each wipe In rowRange1
+    clean1 = clean1 + 1
+    wks1.Range("B" & clean1 & ":T" & clean1).Interior.ColorIndex = 0
+    wks1.Range("W" & clean1 & ":AF" & clean1).Interior.ColorIndex = 0
+Next wipe
 
-'Loop through primary range
+'Set interior color for cells in range whos pm_id matches secondary workbook column A
 For Each rrow1 In rowRange1
     count1 = count1 + 1
     Set myValue1 = wks1.Range("C" & count1)
@@ -57,19 +62,15 @@ For Each rrow1 In rowRange1
         'Debug.Print (count2)
         Set myValue2 = wks2.Range("A" & count2)
         'Debug.Print (myValue2)
+        
         If myValue1.Value = myValue2.Value Then
             Debug.Print (myValue1)
             Debug.Print ("B" & count1 & ":T" & count1)
             wks1.Range("B" & count1 & ":T" & count1).Interior.ColorIndex = 3
             wks1.Range("W" & count1 & ":AF" & count1).Interior.ColorIndex = 3
-        'Else
-            'wks3.Range("B" & count1 & ":T" & count1).Interior.ColorIndex = 0
-            'wks3.Range("W" & count1 & ":AF" & count1).Interior.ColorIndex = 0
         End If
+        
     Next rrow2
 Next rrow1
-
-'MsgBox (lastRow1)
-'MsgBox (lastRow2)
     
 End Sub
