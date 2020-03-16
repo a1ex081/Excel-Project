@@ -30,7 +30,7 @@ Set rowRange1 = wks1.Range("C1:C" & lastRow1)
 Set rowRange2 = wks2.Range("A1:A" & lastRow2)
 
 'primary & secondary empty values
-Dim myValue1
+Dim myValue13
 Dim myValue2
 
 Dim rrow1
@@ -42,7 +42,7 @@ Dim count2 As Integer
 Dim clean1 As Integer
 
 count1 = 0
-clean1 = 0
+clean1 = 0   
 
 'Set interior color for all cells in range to blank
 For Each wipe In rowRange1
